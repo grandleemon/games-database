@@ -10,6 +10,7 @@ module.exports = {
         'main-bg': "#151515",
         'main-grey': "#ffffff99",
         'grey-hsla': "hsla(0,0%,100%,.3)",
+        'light-grey-hsla': "hsla(0,0%,100%,.4)",
         'user-gradient': "background-image: linear-gradient(0deg,#3023ae,#c86dd7)",
         'banner-gradient': "background: linear-gradient(180deg,#fd867d,#b1305c)"
       }
