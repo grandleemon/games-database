@@ -1,20 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
 import './index.css'
 import Layout from "./components/Layout/Layout";
+import Homepage from "./pages/homepage/Homepage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
+        loader: async () => {
+            return console.log(import.meta.env.VITE_API_KEY)
+        },
         children: [
             {
                 path: "",
-                element: <>Homepage</>
+                element: <Homepage />
             },
             {
                 path: "profile",

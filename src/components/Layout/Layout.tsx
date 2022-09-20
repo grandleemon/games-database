@@ -1,16 +1,24 @@
-import React, {useEffect, useRef} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import styles from "./Layout.module.scss";
 import {Link, Outlet} from "react-router-dom";
 
-const Layout = () => {
+import { FiUser } from 'react-icons/fi'
+
+const browseList: string[] = ["Platforms", "Stores", "Collections", "Reviews", "Genres", "Creators", "Tags", "Developers", "Publishers"]
+const platformsList: string[] = ["PC", "PlayStation 4", "Xbox One", "Nintendo Switch", "iOS", "Android"]
+const genresList: string[] = ["Action", "Strategy", "RPG", "Shooter", "Adventure", "Puzzle", "Racing", "Sports"]
+
+const Layout: FC = () => {
     const inputRef = useRef<HTMLInputElement>(null)
+    const [browseShowAll, setBrowseShowAll] = useState<boolean>(false)
+    const [platformsShowAll, setPlatformsShowAll] = useState<boolean>(false)
+    const [genresShowAll, setGenresShowAll] = useState<boolean>(false)
 
     useEffect(() => {
 
         document.addEventListener('keydown', (e) => {
             if(e.altKey && e.key === 'Enter'){
                 inputRef?.current?.focus()
-                console.log(inputRef.current)
             }
         })
 
@@ -39,7 +47,9 @@ const Layout = () => {
                     </div>
 
                     <div className={styles.headerItem}>
-                        <Link to='/profile' className={styles.profileLink}>My Profile</Link>
+                        <Link to='/profile' className={styles.profileLink}>
+                            <FiUser />
+                        </Link>
                     </div>
 
                     <div className={styles.headerItem}>
@@ -47,7 +57,7 @@ const Layout = () => {
                     </div>
                 </div>
             </header>
-                <div className={styles.pageContentWrapCenterer}>
+            <div className={styles.pageContentWrapCenterer}>
                     <div className={styles.pageContentWrap}>
                         <div className={styles.sidebarWrapper}>
                             <aside>
@@ -109,16 +119,16 @@ const Layout = () => {
                                     <div className={styles.sidebarListWrapper}>
                                         <Link to='/games/browse' className={styles.listLink}>Browse</Link>
                                         <ul className={styles.sidebarElementsList}>
-                                            <li>
-                                                <Link to='/games/platforms'>Platforms</Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/games/stores'>Stores</Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/games/collections'>Collections</Link>
-                                            </li>
-                                            <li>
+                                            {!browseShowAll ? browseList.slice(0, 3).map((name, index) => (
+                                                <li key={index}>
+                                                    <Link to={`/games/${name.toLowerCase().replace(/\s/g, "-")}`}>{name}</Link>
+                                                </li>
+                                            )) : browseList.map((name, index) => (
+                                                <li key={index}>
+                                                    <Link to={`/games/${name.toLowerCase().replace(/\s/g, "-")}`}>{name}</Link>
+                                                </li>
+                                            ))}
+                                            <li onClick={() => setBrowseShowAll(!browseShowAll)}>
                                                 <span>Show all</span>
                                             </li>
                                         </ul>
@@ -126,16 +136,16 @@ const Layout = () => {
                                     <div className={styles.sidebarListWrapper}>
                                         <Link to='/games/platforms' className={styles.listLink}>Platforms</Link>
                                         <ul className={styles.sidebarElementsList}>
-                                            <li>
-                                                <Link to='/games/pc'>PC</Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/games/playstation4'>Stores</Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/games/xbox-one'>Collections</Link>
-                                            </li>
-                                            <li>
+                                            {!platformsShowAll ? platformsList.slice(0, 3).map((name, index) => (
+                                                <li key={index}>
+                                                    <Link to={`/games/${name.toLowerCase().replace(/\s/g, "-")}`}>{name}</Link>
+                                                </li>
+                                            )) : platformsList.map((name, index) => (
+                                                <li key={index}>
+                                                    <Link to={`/games/${name.toLowerCase().replace(/\s/g, "-")}`}>{name}</Link>
+                                                </li>
+                                            ))}
+                                            <li onClick={() => setPlatformsShowAll(!platformsShowAll)}>
                                                 <span>Show all</span>
                                             </li>
                                         </ul>
@@ -143,16 +153,16 @@ const Layout = () => {
                                     <div className={styles.sidebarListWrapper}>
                                         <Link to='/genres' className={styles.listLink}>Genres</Link>
                                         <ul className={styles.sidebarElementsList}>
-                                            <li>
-                                                <Link to='/games/action'>Action</Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/games/strategy'>Strategy</Link>
-                                            </li>
-                                            <li>
-                                                <Link to='/games/rpg'>RPG</Link>
-                                            </li>
-                                            <li>
+                                            {!genresShowAll ? genresList.slice(0, 3).map((name, index) => (
+                                                <li key={index}>
+                                                    <Link to={`/games/${name.toLowerCase().replace(/\s/g, "-")}`}>{name}</Link>
+                                                </li>
+                                            )) : genresList.map((name, index) => (
+                                                <li key={index}>
+                                                    <Link to={`/games/${name.toLowerCase().replace(/\s/g, "-")}`}>{name}</Link>
+                                                </li>
+                                            ))}
+                                            <li onClick={() => setGenresShowAll(!genresShowAll)}>
                                                 <span>Show all</span>
                                             </li>
                                         </ul>
