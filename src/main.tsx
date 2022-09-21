@@ -4,17 +4,20 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import './index.css'
 import Layout from "./components/Layout/Layout";
 import Homepage from "./pages/homepage/Homepage";
+import axios from "axios";
+import {Provider} from "react-redux";
+import store from "./store";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        loader: async () => {
-            return console.log(import.meta.env.VITE_API_KEY)
-        },
         children: [
             {
                 path: "",
+                loader: async () => {
+                    return await fetch(`https://api.rawg.io/api/games?key=${import.meta.env.VITE_API_KEY}`)
+                },
                 element: <Homepage />
             },
             {
@@ -28,6 +31,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
   </React.StrictMode>
 )
