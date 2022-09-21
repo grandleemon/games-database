@@ -19,7 +19,7 @@ const Homepage: FC = () => {
     useEffect(() => {
         dispatch(setGames(data))
     }, [])
-
+    console.log('test3')
     return (
         <div className={styles.homepage}>
             <div className={styles.heading}>
