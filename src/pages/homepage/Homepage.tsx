@@ -18,6 +18,7 @@ const Homepage: FC = () => {
 
     useEffect(() => {
         dispatch(setGames(data))
+        console.log('test');
     }, [])
 
     return (
