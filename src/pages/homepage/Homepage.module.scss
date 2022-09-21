@@ -1,0 +1,15 @@
+.homepage{
+  .heading{
+    h1{
+      @apply text-[72px] leading-[74px] font-bold
+    }
+
+    p{
+      @apply text-base
+    }
+  }
+
+  .cards{
+    @apply grid grid-cols-3 pt-6 gap-6
+  }
+}

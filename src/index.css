@@ -6,10 +6,10 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.wrapper{
-    @apply w-[100vw] flex justify-center
-}
-
 html{
     @apply overflow-x-hidden bg-main-bg text-white;
+}
+
+.wrapper{
+    @apply w-[100vw] flex justify-center
 }
