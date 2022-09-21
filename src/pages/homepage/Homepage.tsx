@@ -20,7 +20,7 @@ const Homepage: FC = () => {
         dispatch(setGames(data))
         console.log('test');
     }, [])
-
+    console.log('test3')
     return (
         <div className={styles.homepage}>
             <div className={styles.heading}>
