@@ -1,24 +1,23 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styles from './Homepage.module.scss'
-import GameCard from "../../components/GameCard/GameCard";
-import {useLoaderData} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../store";
-import {gamesSelector, setGames} from "../../store/features/games";
-
-interface IGame {
-    id: number
-}
-
-const array = [1,2,3,4]
+import GameCard, {IGame} from "../../components/GameCard/GameCard";
+import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
+import Loader from "../../components/Loader/Loader";
 
 const Homepage: FC = () => {
-    const data = useLoaderData();
-    const dispatch = useAppDispatch()
-    const games = useAppSelector(gamesSelector)
+    const [games, setGames] = useState([])
+
+    const {isLoading, error, data} = useQuery(['all games'],
+        () => axios.get(`${import.meta.env.VITE_API_URL}games?key=${import.meta.env.VITE_API_KEY}`))
 
     useEffect(() => {
-        dispatch(setGames(data))
-    }, [])
+        console.log(data?.data?.results)
+        if(data) {
+            setGames(data?.data?.results)
+        }
+    }, [data])
+
     return (
         <div className={styles.homepage}>
             <div className={styles.heading}>
@@ -26,11 +25,22 @@ const Homepage: FC = () => {
                 <p>Based on player counts and release date</p>
             </div>
 
-            <div className={styles.cards}>
-                {games?.games?.results?.map((item: IGame) => (
-                    <GameCard key={item.id}/>
-                ))}
+            <div className={styles.cardsWrapper}>
+                <div className={`${styles.loader} ${data && styles.loaded}`}>
+                    {!data && <Loader/>}
+                </div>
+
+                <div className={`${styles.cards} ${data && styles.cardsFetched}`}>
+                    <div className={styles.cardsColumn}>
+                        {games?.map((item: IGame) => (
+                            <GameCard key={item.id} game={item}/>
+                        ))}
+                    </div>
+
+                </div>
             </div>
+
+
         </div>
     );
 };

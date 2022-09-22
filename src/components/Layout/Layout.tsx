@@ -3,7 +3,7 @@ import {Link, Outlet} from "react-router-dom";
 import styles from "./Layout.module.scss";
 
 import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 const Layout: FC = () => {
 
