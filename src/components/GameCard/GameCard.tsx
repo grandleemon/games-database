@@ -22,9 +22,10 @@ const GameCard: FC<IGame> = (
 ) => {
     const [filteredPlatforms, setFilteredPlatforms] = useState<string[]>([])
     const temp: string[] = [];
+    const [width, setWidth] = useState<number>()
 
     useEffect(() => {
-        platforms.forEach(({platform}) => {
+        platforms?.forEach(({platform}) => {
             if(temp?.includes(platform.slug.replace(/\d|-.*/gi, ""))){
                 return
             } else {
@@ -36,7 +37,7 @@ const GameCard: FC<IGame> = (
     }, [])
 
     return (
-        <div className={`${styles.cardWrapper}`}>
+        <div className={`card__wrapper ${styles.cardWrapper}`}>
             <div className={styles.wrapper}>
                 <div className={styles.cardMediaWrapper}>
                     <img src={background_image ? background_image  : imgPlaceholder}
