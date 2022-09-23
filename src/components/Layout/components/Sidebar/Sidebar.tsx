@@ -200,9 +200,11 @@ const Sidebar: FC = () => {
         <div className={styles.sidebarWrapper}>
             <aside>
                 <nav>
-                    {menu.map((item, index) => (
-                        <SidebarMenuItem key={index} title={item.title} link={item.link} list={item.list}/>
-                    ))}
+                    <ul className={styles.sidebarMenuList}>
+                        {menu.map((item, index) => (
+                            <SidebarMenuItem key={index} title={item.title} link={item.link} list={item.list}/>
+                        ))}
+                    </ul>
                 </nav>
             </aside>
         </div>

@@ -15,6 +15,10 @@
     img{
       @apply w-full h-full object-cover rounded-t-[12px];
     }
+
+    .imagePlaceholder{
+      @apply min-h-[100px] bg-main-grey/50 w-full
+    }
   }
 
   .cardContent{

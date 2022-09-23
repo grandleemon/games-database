@@ -8,7 +8,41 @@
     .headerItem{
 
       &.headerSearch{
-        @apply w-full;
+        @apply w-full relative;
+
+        .searchResultsWrapper{
+          @apply absolute opacity-0 z-10 w-full top-[100%] bg-black mt-2 rounded-[20px] p-4 pointer-events-none transition-opacity duration-500;
+
+          &.active{
+            @apply opacity-100 pointer-events-auto
+          }
+
+          .resultsSection{
+            .sectionTitle{
+              @apply font-bold text-lg;
+
+              span{
+                @apply font-normal ml-1 text-white/50
+              }
+            }
+
+            .sectionContent{
+              @apply flex flex-col gap-y-2 mt-2;
+
+              a{
+                @apply hover:text-main-grey transition-colors duration-300 flex gap-x-2 items-center font-bold;
+
+                .resultImage{
+                  @apply w-[36px] h-[47px] rounded-[8px] overflow-hidden;
+
+                  img{
+                    @apply w-full h-full object-cover;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
 
       .logoLink{
@@ -30,7 +64,7 @@
 
         &:hover{
           .searchInput{
-            @apply bg-white duration-300 group-hover:text-black;
+            @apply bg-white duration-300 text-black;
           }
         }
 
