@@ -12,7 +12,9 @@ const Homepage: FC = () => {
     const dispatch = useAppDispatch()
 
     const {isLoading, error, data} = useQuery(['all games'],
-        () => axios.get(`${import.meta.env.VITE_API_URL}games?key=${import.meta.env.VITE_API_KEY}&page_size=40`))
+        () => axios.get(`${import.meta.env.VITE_API_URL}games?key=${import.meta.env.VITE_API_KEY}&page_size=40`), {
+            refetchOnWindowFocus: false
+        })
 
     useEffect(() => {
         if(data) {
