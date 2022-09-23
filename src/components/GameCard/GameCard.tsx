@@ -1,23 +1,28 @@
 import React, {FC, useState} from 'react';
-import styles from './GameCard.module.scss'
-import strayImg from './../../assets/images/stray-img.png'
 import {Link} from "react-router-dom";
 import { ImWindows8 } from 'react-icons/im'
 import { IoLogoPlaystation } from 'react-icons/io'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { HiOutlineGift } from 'react-icons/hi'
+import styles from './GameCard.module.scss'
 
-const GameCard: FC = () => {
-    const [hover, setHover] = useState<boolean>(false)
+export interface IGame {
+    game: {
+        id: number
+        name: string
+        background_image: string
+        metacritic: number
+        added: number
+    }
+}
+
+const GameCard: FC<IGame> = ({game}: IGame ) => {
 
     return (
-        <div className={`${styles.cardWrapper} ${hover ? styles.opened : ""}`}
-             onMouseEnter={() => setHover(true)}
-             onMouseLeave={() => setHover(false)}
-        >
+        <div className={`${styles.cardWrapper}`}>
             <div className={styles.wrapper}>
                 <div className={styles.cardMediaWrapper}>
-                    <img src={strayImg} alt="game image/video"/>
+                    <img src={game?.background_image} alt="game image/video"/>
                 </div>
 
                 <div className={styles.cardContent}>
@@ -27,25 +32,25 @@ const GameCard: FC = () => {
                             <IoLogoPlaystation />
                         </div>
                         <div className={styles.gameScore}>
-                            84
+                            {game.metacritic}
                         </div>
                     </div>
 
                     <div className={styles.gameTitle}>
-                        <Link to='/games/stray'>Stray</Link>
+                        <Link to='/games/stray'>{game.name}</Link>
                     </div>
 
                     <div className={styles.cardButtons}>
                         <button className={styles.buttonAdd}>
                             <AiOutlinePlus />
-                            2,123
+                            {game?.added?.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,')}
                         </button>
                         <button className={styles.buttonWishlist}>
                             <HiOutlineGift />
                         </button>
                     </div>
 
-                    {hover && <div className={`${styles.additionalInfo}`}>
+                    <div className={`${styles.additionalInfo}`}>
                         <div className={styles.aboutGame}>
                             <div className={styles.aboutGameRow}>
                                 <span>Release date:</span>
@@ -64,7 +69,7 @@ const GameCard: FC = () => {
                         <div className={styles.infoButtons}>
 
                         </div>
-                    </div>}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,13 +1,26 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import styles from "./Header.module.scss";
 import {Link} from "react-router-dom";
 import {FiUser} from "react-icons/fi";
 import {useAppSelector} from "../../../store";
 import {gamesSelector} from "../../../store/features/games";
+import {useDebounce} from "../../../hooks/useDebounce";
+import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
 
 const Header: FC = () => {
     const inputRef = useRef<HTMLInputElement>(null)
     const games = useAppSelector(gamesSelector)
+    const [searchTerm, setSearchTerm] = useState('')
+    const debouncedSearchTerm = useDebounce(searchTerm, 500)
+
+    useEffect(() => {
+        if(debouncedSearchTerm){
+            axios
+                .get(`${import.meta.env.VITE_API_URL}games?key=${import.meta.env.VITE_API_KEY}&search=${debouncedSearchTerm}`)
+                .then(res => console.log(res))
+        }
+    }, [debouncedSearchTerm])
 
     useEffect(() => {
 
@@ -33,7 +46,8 @@ const Header: FC = () => {
                     <div className={styles.inputWrapper}>
                         <input type="text" className={styles.searchInput}
                                placeholder={`Search ${games?.games?.count} games`}
-                               ref={inputRef}/>
+                               ref={inputRef}
+                        onChange={e => setSearchTerm(e.target.value)}/>
                         <div className={styles.searchKeyFocus}>
                             <div>alt</div>
                             <span>+</span>

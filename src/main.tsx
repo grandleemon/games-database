@@ -4,9 +4,9 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import './index.css'
 import Layout from "./components/Layout/Layout";
 import Homepage from "./pages/homepage/Homepage";
-import axios from "axios";
 import {Provider} from "react-redux";
 import store from "./store";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const router = createBrowserRouter([
     {
@@ -15,9 +15,6 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                loader: async () => {
-                    return await fetch(`https://api.rawg.io/api/games?key=${import.meta.env.VITE_API_KEY}`)
-                },
                 element: <Homepage />
             },
             {
@@ -29,10 +26,14 @@ const router = createBrowserRouter([
 
 ]);
 
+const queryClient = new QueryClient()
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <RouterProvider router={router} />
+          </Provider>
+      </QueryClientProvider>
   </React.StrictMode>
 )

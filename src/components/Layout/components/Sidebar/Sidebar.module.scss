@@ -1,6 +1,10 @@
 .sidebarWrapper{
   @apply min-w-[220px] py-10;
 
+  aside{
+    @apply sticky top-4;
+  }
+
   nav{
     @apply flex flex-col gap-y-5 text-2xl;
 
@@ -31,6 +35,34 @@
         span{
           @apply opacity-40 font-normal cursor-pointer hover:opacity-60 transition-opacity duration-300 block
         }
+      }
+    }
+  }
+
+  .sidebarMenuItem{
+    @apply flex flex-col gap-y-3;
+
+    .menuLink{
+      @apply font-bold transition-colors duration-300 hover:text-light-grey-hsla block;
+    }
+
+    .menuTitle{
+      @apply font-bold;
+    }
+
+    .menuList{
+      @apply text-base opacity-90 ml-2 flex flex-col gap-y-2;
+
+      .menuListItem{
+        @apply hover:text-emerald-600 hover:opacity-100 transition-colors duration-300 block;
+
+        a{
+          @apply block;
+        }
+      }
+
+      .menuListShowAll{
+        @apply opacity-40 font-normal cursor-pointer hover:opacity-60 transition-opacity duration-300 block;
       }
     }
   }
