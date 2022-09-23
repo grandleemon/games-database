@@ -7,18 +7,31 @@ import {gamesSelector} from "../../../store/features/games";
 import {useDebounce} from "../../../hooks/useDebounce";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
+import Loader from "../../Loader/Loader";
+
+interface IResults {
+    count: number
+    results: []
+}
 
 const Header: FC = () => {
     const inputRef = useRef<HTMLInputElement>(null)
     const games = useAppSelector(gamesSelector)
     const [searchTerm, setSearchTerm] = useState('')
     const debouncedSearchTerm = useDebounce(searchTerm, 500)
+    const [searchResults, setSearchResults] = useState<IResults>()
+    const [loading, setLoading] = useState(false)
+    const [showSearchDropdown, setShowSearchDropdown] = useState(false)
 
     useEffect(() => {
         if(debouncedSearchTerm){
+            setLoading(true)
             axios
                 .get(`${import.meta.env.VITE_API_URL}games?key=${import.meta.env.VITE_API_KEY}&search=${debouncedSearchTerm}`)
-                .then(res => console.log(res))
+                .then(({data}) => {
+                    setSearchResults(data)
+                    setLoading(false)
+                })
         }
     }, [debouncedSearchTerm])
 
@@ -45,13 +58,36 @@ const Header: FC = () => {
                 <div className={`${styles.headerItem} ${styles.headerSearch}`}>
                     <div className={styles.inputWrapper}>
                         <input type="text" className={styles.searchInput}
-                               placeholder={`Search ${games?.games?.count} games`}
+                               onFocus={() => setShowSearchDropdown(true)}
+                               onBlur={() => setShowSearchDropdown(false)}
+                               placeholder={`Search ${games?.games?.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,') } games`}
                                ref={inputRef}
                         onChange={e => setSearchTerm(e.target.value)}/>
                         <div className={styles.searchKeyFocus}>
                             <div>alt</div>
                             <span>+</span>
                             <div>enter</div>
+                        </div>
+                    </div>
+                    <div className={`${styles.searchResultsWrapper} ${showSearchDropdown && searchTerm.length !== 0 && debouncedSearchTerm.length !== 0 ? styles.active : ""}`}>
+                        <div className={styles.resultsSection}>
+                            <div className={styles.sectionTitle}>
+                                Games
+                                <span>{searchResults?.count ? searchResults?.count : ""}</span>
+                            </div>
+                            <div className={styles.sectionContent}>
+                                {!loading ? searchResults?.results?.slice(0, 10).map(item => (
+                                    <Link to={`/games/${item.name.toLowerCase().replace(/\s/gi, "")}`}>
+                                        <div className={styles.resultImage}>
+                                            <img src={item.background_image} alt=""/>
+                                        </div>
+                                        {item.name}
+                                    </Link>
+                                )) : <div className="w-full flex justify-center">
+                                    <Loader />
+                                </div>}
+                                {!loading ? <Link to='/search&query='>See all results</Link> : ""}
+                            </div>
                         </div>
                     </div>
                 </div>

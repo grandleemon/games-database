@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface IState {
+    games: number | null
+}
+
+const initialState: IState = {
     games: null
 }
 
@@ -8,12 +12,12 @@ export const gamesSlice = createSlice({
     name: 'games',
     initialState,
     reducers: {
-        setGames: (state, action) => {
+        setCount: (state, action) => {
             state.games = action.payload
         }
     }
 })
 
-export const {setGames} = gamesSlice.actions
+export const {setCount} = gamesSlice.actions
 
 export default gamesSlice;
