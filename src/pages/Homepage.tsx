@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import styles from './Homepage.module.scss'
-import GameCard, {IGame} from "../../components/GameCard/GameCard";
+import styles from '../components/homepage/Homepage.module.scss'
+import GameCard, {IGame} from "../components/GameCard/GameCard";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
-import Loader from "../../components/Loader/Loader";
-import {useAppDispatch} from "../../store";
-import {setCount} from "../../store/features/games";
-import {Masonry} from "../../components/Masonry/Masonry";
+import Loader from "../components/Loader/Loader";
+import {useAppDispatch} from "../store";
+import {setCount} from "../store/features/games";
+import {Masonry} from "../components/Masonry/Masonry";
 import Isotope from 'isotope-layout';
 
 const Homepage: FC = () => {
