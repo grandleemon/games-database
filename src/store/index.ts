@@ -5,7 +5,7 @@ import {gamesSlice} from "./features/games";
 
 const store = configureStore({
     reducer: {
-        games: gamesSlice.reducer
+        gamesReducer: gamesSlice.reducer
     }
 })
 

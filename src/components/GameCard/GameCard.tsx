@@ -18,9 +18,8 @@ export interface IGame {
 }
 
 const GameCard: FC<IGame> = (
-    {added, platforms, name, metacritic, background_image }: IGame
+    {added, platforms = [], name, metacritic, background_image }: IGame
 ) => {
-
     return (
         <div className={`${styles.cardWrapper}`}>
             <div className={styles.wrapper}>
@@ -32,7 +31,7 @@ const GameCard: FC<IGame> = (
                 <div className={styles.cardContent}>
                     <div className={styles.platformsAndScore}>
                         <div className={styles.gamePlatforms}>
-                            {platforms?.map(item => (
+                            {platforms.map(item => (
                                 <>
                                     {item.platform.slug.includes("pc") && <ImWindows8 />}
                                     {item.platform.slug.includes('playstation5')
