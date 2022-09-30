@@ -1,19 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IState {
-    games: number | null
+    gamesCounter: number | null,
 }
 
 const initialState: IState = {
-    games: null
+    gamesCounter: null,
 }
 
 export const gamesSlice = createSlice({
-    name: 'games',
+    name: 'gamesReducer',
     initialState,
     reducers: {
         setCount: (state, action) => {
-            state.games = action.payload
+            state.gamesCounter = action.payload
         }
     }
 })

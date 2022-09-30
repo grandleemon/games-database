@@ -16,7 +16,8 @@ interface IResults {
 
 const Header: FC = () => {
     const inputRef = useRef<HTMLInputElement>(null)
-    const games = useAppSelector(gamesSelector)
+    const { gamesCounter } = useAppSelector(gamesSelector)
+    const [gamesCount, setGamesCount] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('')
     const debouncedSearchTerm = useDebounce(searchTerm, 500)
     const [searchResults, setSearchResults] = useState<IResults>()
@@ -34,6 +35,12 @@ const Header: FC = () => {
                 })
         }
     }, [debouncedSearchTerm])
+
+    useEffect(() => {
+        if(gamesCounter) {
+            setGamesCount(gamesCounter.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,'))
+        }
+    }, [gamesCounter])
 
     useEffect(() => {
 
@@ -60,7 +67,7 @@ const Header: FC = () => {
                         <input type="text" className={styles.searchInput}
                                onFocus={() => setShowSearchDropdown(true)}
                                onBlur={() => setShowSearchDropdown(false)}
-                               placeholder={`Search ${games?.games?.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,') } games`}
+                               placeholder={`Search ${gamesCount ? gamesCount : '...'} games`}
                                ref={inputRef}
                         onChange={e => setSearchTerm(e.target.value)}/>
                         <div className={styles.searchKeyFocus}>
