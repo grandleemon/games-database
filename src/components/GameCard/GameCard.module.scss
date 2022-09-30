@@ -1,5 +1,5 @@
 .cardWrapper{
-  @apply bg-card-bg rounded-[12px] hover:scale-[1.04] transition-transform duration-500;
+    @apply bg-card-bg rounded-[12px] hover:scale-[1.04] transition-transform duration-500 w-[30%] mb-6;
 
   &.opened{
     @apply rounded-b-none
