@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import { ImWindows8 } from 'react-icons/im'
 import { IoLogoPlaystation } from 'react-icons/io'
@@ -18,10 +18,26 @@ export interface IGame {
 }
 
 const GameCard: FC<IGame> = (
-    {added, platforms = [], name, metacritic, background_image }: IGame
+    {added, platforms, name, metacritic, background_image }: IGame
 ) => {
+    const [filteredPlatforms, setFilteredPlatforms] = useState<string[]>([])
+    const temp: string[] = [];
+    const [width, setWidth] = useState<number>()
+
+    useEffect(() => {
+        platforms?.forEach(({platform}) => {
+            if(temp?.includes(platform.slug.replace(/\d|-.*/gi, ""))){
+                return
+            } else {
+                temp.push(platform.slug.replace(/\d|-.*/gi, ""))
+            }
+        })
+
+        setFilteredPlatforms(temp)
+    }, [])
+
     return (
-        <div className={`${styles.cardWrapper}`}>
+        <div className={`card__wrapper ${styles.cardWrapper}`}>
             <div className={styles.wrapper}>
                 <div className={styles.cardMediaWrapper}>
                     <img src={background_image ? background_image  : imgPlaceholder}
@@ -31,18 +47,12 @@ const GameCard: FC<IGame> = (
                 <div className={styles.cardContent}>
                     <div className={styles.platformsAndScore}>
                         <div className={styles.gamePlatforms}>
-                            {platforms.map(item => (
+                            {filteredPlatforms?.map(item => (
                                 <>
-                                    {item.platform.slug.includes("pc") && <ImWindows8 />}
-                                    {item.platform.slug.includes('playstation5')
-                                        ? <IoLogoPlaystation />
-                                        : item.platform.slug.includes('playstation4')
-                                            ? <IoLogoPlaystation />
-                                            : item.platform.slug.includes('playstation3')
-                                                ? <IoLogoPlaystation />
-                                                : null}
-                                    {item.platform.slug.includes("xbox-series-x") && <FaXbox />
-                                        || item.platform.slug.includes("xbox-360") && <FaXbox />}
+                                    {item.includes("pc") && <ImWindows8 />}
+                                    {item.includes('playstation')
+                                        && <IoLogoPlaystation />}
+                                    {item.includes("xbox") && <FaXbox />}
                                 </>
                             ))}
                         </div>
