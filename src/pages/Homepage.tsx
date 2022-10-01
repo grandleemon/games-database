@@ -1,11 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
-import styles from './Homepage.module.scss'
-import GameCard, {IGame} from "../../components/GameCard/GameCard";
+import styles from './../components/homepage/Homepage.module.scss'
+import GameCard, {IGame} from "../components/GameCard/GameCard";
 import {useQuery} from "@tanstack/react-query";
-import Loader from "../../components/Loader/Loader";
-import {useAppDispatch} from "../../store";
-import {setCount} from "../../store/features/games";
-import {gameApi} from './../../api/index'
+import Loader from "../components/Loader/Loader";
+import {useAppDispatch} from "../store";
+import {setCount} from "../store/features/games";
+import {gameApi} from '../api'
+import Masonry from "react-masonry-css";
 
 const Homepage: FC = () => {
     const [games, setGames] = useState<any>([])
@@ -29,6 +30,13 @@ const Homepage: FC = () => {
         })
     }
 
+    const breakpointColumnsObj = {
+        default: 4,
+        1270: 3,
+        1000: 2,
+        700: 1
+    };
+
     return (
         <div className={styles.homepage}>
             <div className={styles.heading}>
@@ -41,19 +49,29 @@ const Homepage: FC = () => {
                     {isLoading && <Loader/>}
                 </div>
 
-                <div className={`${styles.cards} ${!isLoading && styles.cardsFetched}`}>
-                    <div className={styles.cardsColumn}>
-                        {games?.map((item: IGame) => (
-                            <GameCard key={item.id}
-                                      added={item.added}
-                                      name={item.name}
-                                      background_image={item.background_image}
-                                      metacritic={item.metacritic}
-                                      platforms={item.platforms}
-                            />
-                        ))}
-                    </div>
-                </div>
+                {/*<div className={`${styles.cards} ${!isLoading && styles.cardsFetched}`}>*/}
+
+                {/*        */}
+
+                {/*    */}
+
+                {/*</div>*/}
+
+                <Masonry
+                    breakpointCols={breakpointColumnsObj}
+                    className={`${styles.cards} ${!isLoading && styles.cardsFetched}`}
+                    columnClassName={`${styles.cardsColumn}`}>
+                    {games?.map((item: IGame) => (
+                        <GameCard key={item.id}
+                                  added={item.added}
+                                  name={item.name}
+                                  background_image={item.background_image}
+                                  metacritic={item.metacritic}
+                                  platforms={item.platforms}
+                        />
+                    ))}
+                </Masonry>
+
                 <button onClick={fetchMore}>load more</button>
             </div>
 

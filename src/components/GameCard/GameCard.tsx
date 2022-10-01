@@ -22,7 +22,6 @@ const GameCard: FC<IGame> = (
 ) => {
     const [filteredPlatforms, setFilteredPlatforms] = useState<string[]>([])
     const temp: string[] = [];
-    const [width, setWidth] = useState<number>()
 
     useEffect(() => {
         platforms?.forEach(({platform}) => {
