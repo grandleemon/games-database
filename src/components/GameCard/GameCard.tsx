@@ -18,7 +18,7 @@ export interface IGame {
 }
 
 const GameCard: FC<IGame> = (
-    {added, platforms, name, metacritic, background_image }: IGame
+    {added, platforms, name, metacritic, background_image, id }: IGame
 ) => {
     const [filteredPlatforms, setFilteredPlatforms] = useState<string[]>([])
     const temp: string[] = [];
@@ -61,7 +61,7 @@ const GameCard: FC<IGame> = (
                     </div>
 
                     <div className={styles.gameTitle}>
-                        <Link to={`/games/${name?.toLowerCase().replace(/\s/gi, "-")}`}>{name}</Link>
+                        <Link to={`/games/${id}`}>{name}</Link>
                     </div>
 
                     <div className={styles.cardButtons}>

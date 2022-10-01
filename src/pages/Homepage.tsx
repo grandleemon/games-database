@@ -68,6 +68,7 @@ const Homepage: FC = () => {
                                   background_image={item.background_image}
                                   metacritic={item.metacritic}
                                   platforms={item.platforms}
+                                  id={item.id}
                         />
                     ))}
                 </Masonry>

@@ -7,6 +7,7 @@ import Homepage from "./pages/Homepage";
 import {Provider} from "react-redux";
 import store from "./store";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import Game from "./pages/Game";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
                 path: "profile",
                 element: <>Profile</>
             },
+            {
+                path: 'games/:id',
+                element: <Game />
+            }
         ]
     },
 
