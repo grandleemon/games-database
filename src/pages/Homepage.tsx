@@ -16,6 +16,7 @@ const Homepage: FC = () => {
     const {isLoading, error, data} = useQuery(['all games'],
         () => gameApi.getGames(), {
             onSuccess: (data) => {
+                console.log(data)
                 setPage(page => page + 1)
                 setGames(data?.data.results)
                 dispatch(setCount(data?.data.count))
@@ -69,6 +70,8 @@ const Homepage: FC = () => {
                                   metacritic={item.metacritic}
                                   platforms={item.platforms}
                                   id={item.id}
+                                  released={item.released}
+                                  genres={item.genres}
                         />
                     ))}
                 </Masonry>

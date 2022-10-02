@@ -83,6 +83,14 @@
 
           p{
             @apply text-white/80;
+
+            a{
+              @apply border-b border-dashed hover:text-main-grey transition-colors duration-300
+            }
+
+            span{
+              @apply text-white/80
+            }
           }
         }
       }

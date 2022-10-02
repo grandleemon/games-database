@@ -7,6 +7,7 @@ import { HiOutlineGift } from 'react-icons/hi'
 import { FaXbox } from 'react-icons/fa'
 import imgPlaceholder from './../../assets/images/img-placeholder.jpg'
 import styles from './GameCard.module.scss'
+import dayjs from "dayjs";
 
 export interface IGame {
         id?: number
@@ -15,10 +16,12 @@ export interface IGame {
         metacritic: number
         added: number
         platforms: {platform: {slug: string}}[]
+        released: string
+        genres: {id: number, name: string}[]
 }
 
 const GameCard: FC<IGame> = (
-    {added, platforms, name, metacritic, background_image, id }: IGame
+    {added, platforms, name, metacritic, background_image, id, released, genres }: IGame
 ) => {
     const [filteredPlatforms, setFilteredPlatforms] = useState<string[]>([])
     const temp: string[] = [];
@@ -78,15 +81,16 @@ const GameCard: FC<IGame> = (
                         <div className={styles.aboutGame}>
                             <div className={styles.aboutGameRow}>
                                 <span>Release date:</span>
-                                <p>Dec 31, 2022</p>
+                                <p>{dayjs(released).format('MMM DD, YYYY')}</p>
                             </div>
                             <div className={styles.aboutGameRow}>
                                 <span>Genres:</span>
-                                <p>Action, RPG</p>
-                            </div>
-                            <div className={styles.aboutGameRow}>
-                                <span>Chart:</span>
-                                <p>#10 Top 2022</p>
+                                <p>{genres.map((genre, index) => (
+                                    <>
+                                        <Link to={`genres/${genre.id}`}>{genre.name}</Link>
+                                        <span>{index + 1 === genres.length ? "" : ", "}</span>
+                                    </>
+                                ))}</p>
                             </div>
                         </div>
 
