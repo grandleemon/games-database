@@ -14,6 +14,11 @@ interface IResults {
     results: []
 }
 
+interface IResultsItem {
+    name: string
+    background_image: string
+}
+
 const Header: FC = () => {
     const inputRef = useRef<HTMLInputElement>(null)
     const { gamesCounter } = useAppSelector(gamesSelector)
@@ -83,7 +88,7 @@ const Header: FC = () => {
                                 <span>{searchResults?.count ? searchResults?.count : ""}</span>
                             </div>
                             <div className={styles.sectionContent}>
-                                {!loading ? searchResults?.results?.slice(0, 10).map(item => (
+                                {!loading ? searchResults?.results?.slice(0, 10).map((item: IResultsItem) => (
                                     <Link to={`/games/${item.name.toLowerCase().replace(/\s/gi, "")}`}>
                                         <div className={styles.resultImage}>
                                             <img src={item.background_image} alt=""/>

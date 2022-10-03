@@ -50,14 +50,6 @@ const Homepage: FC = () => {
                     {isLoading && <Loader/>}
                 </div>
 
-                {/*<div className={`${styles.cards} ${!isLoading && styles.cardsFetched}`}>*/}
-
-                {/*        */}
-
-                {/*    */}
-
-                {/*</div>*/}
-
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className={`${styles.cards} ${!isLoading && styles.cardsFetched}`}
