@@ -4,8 +4,10 @@ import styles from "./Layout.module.scss";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
+import useScrollToTop from "../../hooks/useScrollToTop";
 
 const Layout: FC = () => {
+    useScrollToTop()
 
     return (
         <>

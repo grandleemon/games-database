@@ -33,8 +33,7 @@ const Homepage: FC = () => {
 
     const breakpointColumnsObj = {
         default: 4,
-        1270: 3,
-        1000: 2,
+        1100: 3,
         700: 1
     };
 

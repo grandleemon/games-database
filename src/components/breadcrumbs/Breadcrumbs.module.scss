@@ -1,0 +1,7 @@
+.breadcrumbs{
+  @apply flex gap-x-[5px] text-sm text-main-grey/50;
+
+  a{
+    @apply hover:text-white transition-colors duration-300
+  }
+}
