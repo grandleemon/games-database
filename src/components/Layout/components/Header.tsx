@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, MutableRefObject, Ref, useEffect, useRef, useState} from 'react';
 import styles from "./Header.module.scss";
 import {Link, useLocation} from "react-router-dom";
 import {FiUser} from "react-icons/fi";
@@ -32,12 +32,13 @@ const Header: FC = () => {
     const [loading, setLoading] = useState(false)
     const [showSearchDropdown, setShowSearchDropdown] = useState(false)
 
-    const ref = useClickOutside(() => {
+    const ref: MutableRefObject<HTMLDivElement> = useClickOutside(() => {
         setShowSearchDropdown(false)
     })
 
     useEffect(() => {
         setShowSearchDropdown(false)
+        setSearchTerm('')
     }, [location])
 
     useEffect(() => {
@@ -81,6 +82,7 @@ const Header: FC = () => {
                 <div className={`${styles.headerItem} ${styles.headerSearch}`}>
                     <div className={styles.inputWrapper} ref={ref}>
                         <input type="text" className={styles.searchInput}
+                               value={searchTerm}
                                onFocus={() => setShowSearchDropdown(true)}
                                // onBlur={() => setShowSearchDropdown(false)}
                                placeholder={`Search ${gamesCount ? gamesCount : '...'} games`}

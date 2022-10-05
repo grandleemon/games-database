@@ -1,9 +1,9 @@
-import {useEffect, useRef} from "react";
+import { MutableRefObject, useEffect, useRef} from "react";
 
-export let useClickOutside = (handler: any) => {
-    let domNode = useRef()
+export let useClickOutside = (handler: () => void) => {
+    let domNode = useRef<any>()
     useEffect(() => {
-        let maybeHandler = (e: any) => {
+        let maybeHandler = (e: Event) => {
             if(domNode.current && !domNode.current?.contains(e.target)) {
                 handler()
             }

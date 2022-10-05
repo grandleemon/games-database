@@ -30,12 +30,72 @@
         @apply text-xs bg-white text-black h-[14px] rounded-sm px-[5px] py-[1px] hover:bg-main-grey transition-colors duration-300 cursor-pointer;
       }
     }
+
+    .ratingDistribution{
+      @apply mt-6;
+
+     .ratingDistributionStats{
+       @apply h-[50px] flex;
+
+       div{
+         @apply h-full;
+
+         &:first-child{
+           @apply rounded-l;
+         }
+
+         &:last-child{
+           @apply rounded-r;
+         }
+       }
+     }
+    }
+
+    .gameMeta{
+      @apply flex flex-wrap mt-8;
+
+      .gameMetaBlock{
+        @apply w-[50%] mb-4;
+
+        &:nth-child(odd){
+          @apply pr-2;
+        }
+
+        &:nth-child(2n){
+          @apply pl-2;
+        }
+
+        .metaTitle{
+          @apply mb-2 text-main-grey/20 text-sm;
+        }
+
+        .metaText{
+          a{
+            background-image: linear-gradient(0deg,hsla(0,0%,100%,0) 0,hsla(0,0%,100%,.4) 0,hsla(0,0%,100%,.4) 1px,hsla(0,0%,100%,0) 0);
+
+            @apply hover:text-white/40 transition-colors duration-300
+          }
+
+          .metaScore{
+            @apply p-[2px] border font-bold inline-block min-w-[32px] text-center rounded
+          }
+        }
+      }
+
+      .gameMetaBlock.wideBlock{
+        @apply w-full;
+      }
+    }
   }
 
 
   .gameMediaInfo{
     flex: 0 0 auto;
     @apply w-[384px] ml-[48px];
+
+    .gameVideo{
+      @apply rounded-[6px] overflow-hidden mb-4;
+    }
 
     .gameScreenshots{
       @apply grid grid-cols-2 gap-4;
