@@ -85,7 +85,7 @@ const Header: FC = () => {
                                value={searchTerm}
                                onFocus={() => setShowSearchDropdown(true)}
                                // onBlur={() => setShowSearchDropdown(false)}
-                               placeholder={`Search ${gamesCount ? gamesCount : '...'} games`}
+                               placeholder={`Search games`}
                                ref={inputRef}
                         onChange={e => setSearchTerm(e.target.value)}/>
                         <div className={styles.searchKeyFocus}>

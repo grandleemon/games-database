@@ -12,6 +12,7 @@ import Loader from "../components/Loader/Loader";
 import Lightbox from "react-image-lightbox";
 import 'react-image-lightbox/style.css';
 import dayjs from "dayjs";
+import {getGameScreenshots} from "../api/gameApi";
 
 interface IGame {
     background_image: string
@@ -29,7 +30,7 @@ interface IGame {
     esrb_rating: {name: string}
     tags: {name: string, id: number}[]
     website: string
-    ratings: {percent: number, title: string, id: number}[]
+    ratings: {percent: number, title: string, id: number, count: number}[]
 }
 
 interface IScreenshots {
@@ -48,22 +49,44 @@ const Game: FC = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
     const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false)
     const statsRef = useRef<HTMLDivElement>(null)
+    const [hoveredMeta, setHoveredMeta] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const {isLoading, refetch} = useQuery(['game details'],
-        () => gameApi.getGameDetails(id), {
-            onSuccess: (data) => {
-                console.log(data)
-                setCurrentGame(data?.data)
-            }
-        })
+    const getGameInfo = () => {
+        setIsLoading(true)
+        // gameApi.getGameDetails(id)
+        Promise.all([gameApi.getGameDetails(id), gameApi.getGameScreenshots(id)])
+            .then((res: any) => {
+                console.log(res)
+                setIsLoading(false)
+                setCurrentGame(res[0].data)
+                setCurrentGameScreenshots(res[1].data.results)
+            })
+    }
+
+    useEffect(getGameInfo, [])
+
+    useEffect(getGameInfo, [id])
 
     useEffect(() => {
-        refetch().then(({data}) => setCurrentGame(data?.data))
-    }, [id])
+        console.log(currentGame)
+    }, [currentGame])
 
-    useEffect(() => {
-        refetch().then(({data}) => setCurrentGame(data?.data))
-    }, [])
+    // const {isLoading, refetch} = useQuery(['game details'],
+    //     () => gameApi.getGameDetails(id), {
+    //         onSuccess: (data) => {
+    //             console.log(data)
+    //             setCurrentGame(data?.data)
+    //         }
+    //     })
+
+    // useEffect(() => {
+    //     refetch().then(({data}) => setCurrentGame(data?.data))
+    // }, [id])
+    //
+    // useEffect(() => {
+    //     refetch().then(({data}) => setCurrentGame(data?.data))
+    // }, [])
 
     useEffect(() => {
         screenshotsRefetch().then(({data}) => setCurrentGameScreenshots(data?.data?.results))
@@ -73,13 +96,6 @@ const Game: FC = () => {
         () => gameApi.getGameScreenshots(id), {
             onSuccess: (data) => {
                 setCurrentGameScreenshots(data?.data?.results)
-            }
-        })
-
-    const {isLoading: moviesLoading} = useQuery(['game movies'],
-        () => gameApi.getGameMovies(id), {
-            onSuccess: (data) => {
-                console.log(data)
             }
         })
 
@@ -116,9 +132,13 @@ const Game: FC = () => {
         }
     }
 
+    const resizeRatingStatsBlock = (percent: number) => {
+        return statsRef?.current && Math.round(percent) * statsRef?.current?.clientWidth / 100
+    }
+
     return (
         <>
-            {<div style={{display: "flex", justifyContent: "center", alignItems: "center", position: "fixed", opacity: isLoading && moviesLoading && screenshotsLoading ? "1" : "0", pointerEvents: isLoading && moviesLoading && screenshotsLoading ? "auto" : "none", backgroundColor: "black", width: '100vw', height: "100vh", transition: "all .3s", top: "0", left: "0"}}>
+            {<div style={{display: "flex", justifyContent: "center", alignItems: "center", position: "fixed", opacity: isLoading ? "1" : "0", pointerEvents: isLoading ? "auto" : "none", backgroundColor: "black", width: '100vw', height: "100vh", transition: "all .3s", top: "0", left: "0"}}>
                     <Loader/>
                 </div>
             }
@@ -127,7 +147,7 @@ const Game: FC = () => {
                 <div className={styles.gameInfo}>
                     <div className={styles.gameHead}>
                         <div className={styles.headPlatforms}>
-                            {currentGame?.parent_platforms.map(item => (
+                            {currentGame?.parent_platforms?.map(item => (
                                 <>
                                     {item.platform.slug.includes("pc") && <ImWindows8 />}
                                     {item.platform.slug.includes('playstation')
@@ -141,30 +161,44 @@ const Game: FC = () => {
                         </div>
                     </div>
                     <h1>{currentGame?.name}</h1>
+                    <div className={styles.totalGameRating}>
+                        <div className={styles.totalGameRatingText}>{currentGame?.ratings[0]?.title}</div>
+                        <div className={styles.ratingChart}>{currentGame?.ratings?.reduce((acc, next) => acc + next.count, 0)} ratings</div>
+                    </div>
                     <div className={styles.ratingDistribution}>
                         <div className={styles.ratingDistributionStats} ref={statsRef}>
-                            {currentGame?.ratings?.map((item) => (
-                                <div key={item.id} className={item.title} style={{width: statsRef?.current ? Math.round(item.percent) * statsRef?.current?.clientWidth / 100 + 'px' : ""}}></div>
+                            {currentGame?.ratings?.map((item, idx) => (
+                                <div key={item.id}
+                                     className={`${item.title} ${hoveredMeta === item.title ? "statsItemHovered" : ""}`}
+                                     style={{width: resizeRatingStatsBlock(item.percent) + 'px' }}
+                                    onMouseEnter={() => setHoveredMeta(item.title)}
+                                    onMouseLeave={() => setHoveredMeta("")}></div>
                             ))}
                         </div>
                         <div className={styles.distributionMeta}>
-                            distribution meta
+                            {currentGame?.ratings?.map((item) => (
+                                <div key={item.id}
+                                     className={`${styles.distributionMetaItem} ${hoveredMeta === item.title ? styles.distributionItemHovered : ""}`}
+                                     onMouseEnter={() => setHoveredMeta(item.title)}
+                                     onMouseLeave={() => setHoveredMeta("")}>
+                                    <div className={`distribution__meta-icon ${item.title}-icon`}></div>
+                                    <div className={styles.distributionMetaTitle}>{item.title}</div>
+                                    <div className={styles.distributionMetaCount}>{item.count}</div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                     <div className={styles.gameDescription}>
                         <h2>About</h2>
-                        {(currentGame?.description && currentGame?.description.length >= 612 && !showAbout)
+                        {(currentGame?.description && currentGame?.description?.length >= 612 && !showAbout)
                             ? <>
-                                {currentGame?.description_raw.substring(0, 612) + "..." + " "}
+                                {currentGame?.description_raw?.substring(0, 612) + "..." + " "}
                                 <span onClick={() => setShowAbout(true)}>Read more</span>
                             </>
                             : currentGame?.description && <>
                             {parse(currentGame?.description)}
                             <span onClick={() => setShowAbout(false)}>Show less</span>
                         </>}
-
-
-
 
                     </div>
                     <div className={styles.gameMeta}>

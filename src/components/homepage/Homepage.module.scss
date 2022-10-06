@@ -38,5 +38,13 @@
       }
     }
   }
+
+  .hiddenLoadMore{
+    @apply my-5 h-10;
+  }
+
+  .loadingMore{
+    @apply fixed w-[100vw] top-0 left-0 h-[100vh] flex justify-center items-center bg-white/10 rounded-[6px] py-4;
+  }
 }
 
