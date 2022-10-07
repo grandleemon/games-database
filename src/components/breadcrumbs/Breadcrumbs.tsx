@@ -2,7 +2,7 @@ import styles from './Breadcrumbs.module.scss'
 import {Link} from "react-router-dom";
 import {FC} from "react";
 
-const Breadcrumbs: FC<{currentPage: string | undefined}> = ({currentPage}) => {
+const Breadcrumbs: FC<{currentPage: string}> = ({currentPage}) => {
     return (
         <div className={styles.breadcrumbs}>
             <Link to='/'>Home</Link>

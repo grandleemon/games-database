@@ -1,10 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './../components/homepage/Homepage.module.scss'
 import GameCard, {IGame} from "../components/GameCard/GameCard";
-import {useQuery} from "@tanstack/react-query";
 import Loader from "../components/Loader/Loader";
-import {useAppDispatch} from "../store";
-import {setCount} from "../store/features/games";
 import {gameApi} from '../api'
 import Masonry from "react-masonry-css";
 import {useInView} from "react-intersection-observer";
@@ -15,7 +12,6 @@ const Homepage: FC = () => {
     });
     const [games, setGames] = useState<any>([])
     const [page, setPage] = useState(2)
-    const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
 

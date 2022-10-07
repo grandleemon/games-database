@@ -22,7 +22,7 @@
       display: flex;
       margin-left: -30px; /* gutter size offset */
       width: auto;
-      @apply opacity-0 pt-6 transition-opacity duration-1000;
+      @apply opacity-0 pt-6 transition-opacity duration-500;
 
       &.cardsFetched{
         @apply opacity-100;
