@@ -2,24 +2,24 @@ import React, {FC, useState} from 'react';
 import parse from "html-react-parser";
 
 interface IProps {
-    game: undefined | {
-        description: string
-        description_raw: string
-    }
+    description: string
+    description_raw: string
 }
 
-const GameAbout: FC<IProps> = ({game}) => {
+const GameAbout: FC<IProps> = ({description, description_raw}) => {
     const [showAbout, setShowAbout] = useState<boolean>(false)
+
+    const condition = description && description?.length >= 612 && !showAbout
 
     return (
         <>
-            {(game?.description && game?.description?.length >= 612 && !showAbout)
+            {condition
                 ? <>
-                    {game?.description_raw?.substring(0, 612) + "..." + " "}
+                    {description_raw.substring(0, 612) + "..." + " "}
                     <span onClick={() => setShowAbout(true)}>Read more</span>
                 </>
-                : game?.description && <>
-                {parse(game?.description)}
+                : <>
+                {parse(description)}
                 <span onClick={() => setShowAbout(false)}>Show less</span>
             </>}
         </>

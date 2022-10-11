@@ -10,7 +10,7 @@ import GameScreenshots from "./GameScreenshots";
 import {IGame, IScreenshots} from "../../pages/Game";
 
 interface IProps {
-    currentGame: undefined | IGame
+    currentGame: IGame
     openLighbox: Dispatch<SetStateAction<boolean>>
     setImageIndex: Dispatch<SetStateAction<number>>
     imageIndex: number
@@ -41,9 +41,11 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
         <div className={styles.gameDetails}>
             <div className={styles.gameInfo}>
                 <div className={styles.gameHead}>
-                    <div className={styles.headPlatforms}>
-                        <GamePlatforms game={currentGame} />
-                    </div>
+                    {currentGame.parent_platforms &&
+                        <div className={styles.headPlatforms}>
+                            <GamePlatforms platforms={currentGame.parent_platforms}/>
+                        </div>
+                    }
                     <div>
                         AVERAGE PLAYTIME: {currentGame?.playtime} HOURS
                     </div>
@@ -53,21 +55,24 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                     <div className={styles.totalGameRatingText}>{currentGame?.ratings[0]?.title}</div>
                     <div className={styles.ratingChart}>{currentGame?.ratings?.reduce((acc, next) => acc + next.count, 0)} ratings</div>
                 </div>
+                {currentGame?.ratings &&
                 <div className={styles.ratingDistribution}>
-                    <DistributionStats game={currentGame}
+                    <DistributionStats ratings={currentGame.ratings}
                                        hoveredMeta={hoveredMeta}
                                        setHoveredMeta={setHoveredMeta}
                     />
                     <div className={styles.distributionMeta}>
-                        <DistributionMeta game={currentGame}
-                                          hoveredMeta={hoveredMeta}
-                                          setHoveredMeta={setHoveredMeta}
-                        />
+                            <DistributionMeta ratings={currentGame.ratings}
+                                              hoveredMeta={hoveredMeta}
+                                              setHoveredMeta={setHoveredMeta}
+                            />
                     </div>
-                </div>
+                </div>}
                 <div className={styles.gameDescription}>
                     <h2>About</h2>
-                    <GameAbout game={currentGame}/>
+
+                    {(currentGame?.description && currentGame.description_raw )&& <GameAbout description={currentGame.description}
+                               description_raw={currentGame.description_raw}/>}
                 </div>
                 <div className={styles.gameMeta}>
                     <div className={styles.gameMetaBlock}>

@@ -3,16 +3,21 @@ import {ImWindows8} from "react-icons/im";
 import {IoLogoPlaystation} from "react-icons/io";
 import {FaXbox} from "react-icons/fa";
 
-interface IProps {
-    game: undefined | {
-        parent_platforms: {platform: {slug: string}}[]
+interface IPlatformItem {
+    platform: {
+        slug: string
     }
 }
 
-const GamePlatforms: FC<IProps> = ({game}) => {
+interface IProps {
+    platforms: IPlatformItem[]
+
+}
+
+const GamePlatforms: FC<IProps> = ({platforms}) => {
     return (
         <>
-            {game?.parent_platforms?.map((item, idx) => (
+            {platforms?.map((item, idx) => (
                 <span key={idx}>
                     {item.platform.slug.includes("pc") && <ImWindows8 />}
                     {item.platform.slug.includes('playstation')

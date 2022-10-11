@@ -1,18 +1,22 @@
 import React, {Dispatch, FC, SetStateAction} from 'react';
 import styles from "./Game.module.scss";
 
+export interface IRatingItem {
+    id: number
+    title: string
+    count: number
+}
+
 interface IDistributionProps {
-    game: undefined | {
-        ratings: {id: number, title: string, count: number}[]
-    }
+    ratings: IRatingItem[]
     hoveredMeta: string
     setHoveredMeta: Dispatch<SetStateAction<string>>
 }
 
-const DistributionMeta: FC<IDistributionProps> = ({game, hoveredMeta, setHoveredMeta}) => {
+const DistributionMeta: FC<IDistributionProps> = ({ratings, hoveredMeta, setHoveredMeta}) => {
     return (
         <>
-            {game?.ratings?.map((item) => (
+            {ratings.map((item) => (
                 <div key={item.id}
                      className={`${styles.distributionMetaItem} ${hoveredMeta === item.title ? styles.distributionItemHovered : ""}`}
                      onMouseEnter={() => setHoveredMeta(item.title)}

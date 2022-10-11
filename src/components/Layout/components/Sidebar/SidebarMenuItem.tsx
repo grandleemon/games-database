@@ -6,14 +6,17 @@ import styles from './Sidebar.module.scss'
 const SidebarMenuItem: FC<IMenu> = (item: IMenu) => {
     const [show, setShow] = useState<boolean>(false)
 
+    const sliceLength = !show ? 3 : item.list && item.list.length
+
     return (
         <li className={styles.sidebarMenuItem}>
             {item.link
                 ? <Link to={item.link} className={styles.menuLink}>{item.title}</Link>
-                : <span className={styles.menuTitle}>{item.title}</span>}
+                : <span className={styles.menuTitle}>{item.title}</span>
+            }
             {item?.list && item?.list?.length > 4
                 ? <ul className={styles.menuList}>
-                    {item.list.slice(0, !show ? 3 : item.list.length).map((listItem, idx) => (
+                    {item.list.slice(0, sliceLength).map((listItem, idx) => (
                             <li className={styles.menuListItem} key={idx}>
                                 <Link to={listItem?.link}>{listItem.title}</Link>
                             </li>

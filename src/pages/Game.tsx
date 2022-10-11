@@ -64,19 +64,21 @@ const Game: FC = () => {
                     <Loader/>
                 </div>
             }
+
             {currentGame && currentGame.name && (
                 <Breadcrumbs currentPage={currentGame.name} />
             )}
 
-
-            <GameDetails currentGame={currentGame}
+            {currentGame && <GameDetails currentGame={currentGame}
                          gameScreenshots={currentGameScreenshots}
                          imageIndex={currentImageIndex}
                          openLighbox={setIsLightboxOpen}
                          setImageIndex={setCurrentImageIndex}
-            />
+            />}
 
-            <BackgroundImageWrapper game={currentGame} isLoading={isLoading}/>
+            {currentGame?.background_image && <BackgroundImageWrapper background={currentGame.background_image}
+                                                                      isLoading={isLoading}
+            />}
 
             {isLightboxOpen && <LightboxGallery
                 screenshots={currentGameScreenshots}

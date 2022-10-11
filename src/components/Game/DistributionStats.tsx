@@ -1,20 +1,23 @@
 import React, {Dispatch, FC, memo, SetStateAction, useEffect, useRef} from 'react';
 import styles from "./Game.module.scss";
+import {IRatingItem} from "./DistributionMeta";
+
+interface IStatsItem extends IRatingItem {
+    percent: number
+}
 
 interface IProps {
-    game: undefined | {
-        ratings: {id: number, title: string, count: number, percent: number}[]
-    }
+    ratings: IStatsItem[]
     hoveredMeta: string
     setHoveredMeta: Dispatch<SetStateAction<string>>
 }
 
-const DistributionStats: FC<IProps> = memo(({game, setHoveredMeta, hoveredMeta}) => {
+const DistributionStats: FC<IProps> = memo(({ratings, setHoveredMeta, hoveredMeta}) => {
     const statsRef = useRef<HTMLDivElement>(null)
 
     return (
         <div className={styles.ratingDistributionStats} ref={statsRef}>
-            {game?.ratings?.map((item, idx) => (
+            {ratings?.map((item, idx) => (
                 <div key={item.id}
                      className={`${item.title} ${hoveredMeta === item.title ? "statsItemHovered" : ""}`}
                      style={{width: item.percent + "%"}}
