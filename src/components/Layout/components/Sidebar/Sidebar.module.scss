@@ -1,5 +1,5 @@
 .sidebarWrapper{
-  @apply min-w-[220px] py-10;
+  @apply min-w-[220px] py-10 hidden xl:block;
 
   //aside{
   //  @apply sticky top-4;

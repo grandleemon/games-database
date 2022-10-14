@@ -11,3 +11,15 @@ export const getGameDetails = (id: string) => {
         .then(({ data }) => ({data}))
         .catch(console.error)
 }
+
+export const getGameScreenshots = (id: string) => {
+    return axiosClassic.get<any>(`games/${id}/screenshots?key=${import.meta.env.VITE_API_KEY}`)
+        .then(({ data }) => ({data}))
+        .catch(console.error)
+}
+
+export const getGameMovies = (id: string) => {
+    return axiosClassic.get<any>(`games/${id}/movies?key=${import.meta.env.VITE_API_KEY}`)
+        .then((data) => ({data}))
+        .catch(console.error)
+}

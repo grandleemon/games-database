@@ -1,4 +1,4 @@
-import styles from './Breadcrumbs.module.css'
+import styles from './Breadcrumbs.module.scss'
 import {Link} from "react-router-dom";
 import {FC} from "react";
 

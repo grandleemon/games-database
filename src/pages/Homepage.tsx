@@ -1,40 +1,63 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './../components/homepage/Homepage.module.scss'
 import GameCard, {IGame} from "../components/GameCard/GameCard";
-import {useQuery} from "@tanstack/react-query";
 import Loader from "../components/Loader/Loader";
-import {useAppDispatch} from "../store";
-import {setCount} from "../store/features/games";
 import {gameApi} from '../api'
 import Masonry from "react-masonry-css";
+import {useInView} from "react-intersection-observer";
 
 const Homepage: FC = () => {
+    const { ref, inView, entry } = useInView({
+        rootMargin: '50px'
+    });
     const [games, setGames] = useState<any>([])
-    const [page, setPage] = useState(1)
-    const dispatch = useAppDispatch()
+    const [page, setPage] = useState(2)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
 
-    const {isLoading, error, data} = useQuery(['all games'],
-        () => gameApi.getGames(), {
-            onSuccess: (data) => {
-                console.log(data)
-                setPage(page => page + 1)
-                setGames(data?.data.results)
-                dispatch(setCount(data?.data.count))
-            }
-        })
+    useEffect(() => {
+        setIsLoading(true)
+        gameApi.getGames()
+            .then(({data, error}: any) => {
+                setIsLoading(false)
+                setGames(data.results)
+            })
+            .catch(error => console.error(error))
+    }, [])
+
+    useEffect(() => {
+        console.log(games)
+    }, [games])
+
+    // const {isLoading, error, data} = useQuery(['all games'],
+    //     () => gameApi.getGames(), {
+    //         onSuccess: (data) => {
+    //             console.log(data)
+    //             setPage(page => page + 1)
+    //             setGames(data?.data.results)
+    //             dispatch(setCount(data?.data.count))
+    //         }
+    //     })
+
+    useEffect(() => {
+        if(inView) fetchMore()
+    }, [inView])
 
     const fetchMore = () => {
-        gameApi.getGames(40, page).then(({data}: any) => {
-            setPage(page => page + 1)
-            setGames([...games, ...data?.results])
-            console.log(data)
-        })
+        setIsLoadingMore(true)
+        gameApi.getGames(40, page)
+            .then(({data, error}: any) => {
+                setIsLoadingMore(false)
+                setPage(page => page + 1)
+                setGames([...games, ...data?.results])
+                console.log(data)
+            })
+            .catch(err => console.error(err))
     }
 
     const breakpointColumnsObj = {
         default: 4,
-        1270: 3,
-        1000: 2,
+        1100: 3,
         700: 1
     };
 
@@ -52,7 +75,7 @@ const Homepage: FC = () => {
 
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
-                    className={`${styles.cards} ${!isLoading && styles.cardsFetched}`}
+                    className={`${styles.cards} ${(!isLoading && !isLoadingMore) && styles.cardsFetched}`}
                     columnClassName={`${styles.cardsColumn}`}>
                     {games?.map((item: IGame) => (
                         <GameCard key={item.id}
@@ -66,9 +89,13 @@ const Homepage: FC = () => {
                                   genres={item.genres}
                         />
                     ))}
+
                 </Masonry>
 
-                <button onClick={fetchMore}>load more</button>
+                {!isLoading && <div className={styles.hiddenLoadMore} ref={ref}></div>}
+                {isLoadingMore && <div className={styles.loadingMore}>
+                    <Loader />
+                </div>}
             </div>
 
 

@@ -22,7 +22,7 @@
       display: flex;
       margin-left: -30px; /* gutter size offset */
       width: auto;
-      @apply opacity-0 pt-6 transition-opacity duration-1000;
+      @apply opacity-0 pt-6 transition-opacity duration-500;
 
       &.cardsFetched{
         @apply opacity-100;
@@ -37,6 +37,14 @@
         }
       }
     }
+  }
+
+  .hiddenLoadMore{
+    @apply my-5 h-10;
+  }
+
+  .loadingMore{
+    @apply fixed w-[100vw] top-0 left-0 h-[100vh] flex justify-center items-center bg-white/10 rounded-[6px] py-4;
   }
 }
 

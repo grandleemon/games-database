@@ -14,3 +14,33 @@ html{
     @apply w-[100vw] flex justify-center
 }
 
+.exceptional, .exceptional-icon{
+    background-image: linear-gradient(180deg,#b4ec51,#429321);
+}
+
+.recommended, .recommended-icon{
+    background-image: linear-gradient(0deg,#4354b9,#649bff);
+}
+
+.meh, .meh-icon{
+    background-image: linear-gradient(180deg,#fad961,#f76b1c);
+}
+
+.skip, .skip-icon{
+    background-image: linear-gradient(180deg,#ff5764,#f11a2a);
+}
+
+.distribution__meta-icon{
+    @apply w-[10px] h-[10px] rounded-full mr-[6px];
+}
+
+.exceptional, .recommended, .meh, .skip{
+    @apply transition-shadow duration-300 hover:shadow-[0_0_10px_0_#fff] cursor-pointer;
+}
+
+.exceptional.statsItemHovered,
+.recommended.statsItemHovered,
+.meh.statsItemHovered,
+.skip.statsItemHovered{
+    @apply shadow-[0_0_10px_0_#fff];
+}
