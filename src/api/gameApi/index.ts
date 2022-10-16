@@ -1,11 +1,12 @@
 import api from "../interceptor";
 import {ApiResponse} from "../../models/api";
 import {IGame, IScreenshot} from "../../models/api/game";
+import {IGameCard} from "../../models/gamecard";
 
 const API_KEY = import.meta.env.VITE_API_KEY
 
-export const getGames = (pageSize: number = 40, page: number = 1): ApiResponse<{count: number, results: IGame[]}> => {
-    return api.get<{count: number, results: IGame[]}>(`games?key=${API_KEY}&page=${page}&page_size=${pageSize}`)
+export const getGames = (pageSize: number = 40, page: number = 1): ApiResponse<{count: number, results: IGameCard[]}> => {
+    return api.get<{count: number, results: IGameCard[]}>(`games?key=${API_KEY}&page=${page}&page_size=${pageSize}`)
         .then(({ data }) => ({data}))
         .catch(error => ({error}))
 }

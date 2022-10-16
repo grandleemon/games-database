@@ -2,58 +2,30 @@ import React, {FC, useEffect, useState} from 'react';
 import styles from './index.module.scss'
 import GameCard from "../../components/GameCard/GameCard";
 import Loader from "../../components/Loader/Loader";
-import {gameApi} from '../../api'
 import Masonry from "react-masonry-css";
 import {useInView} from "react-intersection-observer";
 import {IGameCard} from "../../models/gamecard";
+import {useAppDispatch, useAppSelector} from "../../store";
+import {fetchMoreGamesThunk, getGamesThunk} from "../../store/features/games/gamesSlice";
+import {gamesSelector} from "../../store/features/games";
 
 const Homepage: FC = () => {
     const { ref, inView, entry } = useInView({
         rootMargin: '50px'
     });
-    const [games, setGames] = useState<any>([])
-    const [page, setPage] = useState(2)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
+    const dispatch = useAppDispatch()
+    const { games, initialLoading, loadingMore, page } = useAppSelector(gamesSelector)
 
     useEffect(() => {
-        setIsLoading(true)
-        gameApi.getGames()
-            .then(({data, error}: any) => {
-                setIsLoading(false)
-                setGames(data.results)
-            })
-            .catch(error => console.error(error))
+        dispatch(getGamesThunk())
     }, [])
-
-    useEffect(() => {
-        console.log(games)
-    }, [games])
-
-    // const {isLoading, error, data} = useQuery(['all games'],
-    //     () => gameApi.getGames(), {
-    //         onSuccess: (data) => {
-    //             console.log(data)
-    //             setPage(page => page + 1)
-    //             setGames(data?.data.results)
-    //             dispatch(setCount(data?.data.count))
-    //         }
-    //     })
 
     useEffect(() => {
         if(inView) fetchMore()
     }, [inView])
 
     const fetchMore = () => {
-        setIsLoadingMore(true)
-        gameApi.getGames(40, page)
-            .then(({data, error}: any) => {
-                setIsLoadingMore(false)
-                setPage(page => page + 1)
-                setGames([...games, ...data?.results])
-                console.log(data)
-            })
-            .catch(err => console.error(err))
+        dispatch(fetchMoreGamesThunk(page))
     }
 
     const breakpointColumnsObj = {
@@ -69,12 +41,12 @@ const Homepage: FC = () => {
                 <p>Based on player counts and release date</p>
             </div>
             <div className={styles.cardsWrapper}>
-                <div className={`${styles.loader} ${!isLoading && styles.loaded}`}>
-                    {isLoading && <Loader/>}
+                <div className={`${styles.loader} ${!initialLoading && styles.loaded}`}>
+                    {initialLoading && <Loader/>}
                 </div>
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
-                    className={`${styles.cards} ${(!isLoading && !isLoadingMore) && styles.cardsFetched}`}
+                    className={`${styles.cards} ${(!initialLoading && !loadingMore) && styles.cardsFetched}`}
                     columnClassName={`${styles.cardsColumn}`}>
                     {games?.map((item: IGameCard) => (
                         <GameCard key={item.id}
@@ -89,8 +61,8 @@ const Homepage: FC = () => {
                         />
                     ))}
                 </Masonry>
-                {!isLoading && <div className={styles.hiddenLoadMore} ref={ref}></div>}
-                {isLoadingMore && <div className={styles.loadingMore}>
+                {!initialLoading && <div className={styles.hiddenLoadMore} ref={ref}></div>}
+                {loadingMore && <div className={styles.loadingMore}>
                     <Loader />
                 </div>}
             </div>
