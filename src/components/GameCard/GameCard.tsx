@@ -8,34 +8,35 @@ import { FaXbox } from 'react-icons/fa'
 import imgPlaceholder from './../../assets/images/img-placeholder.jpg'
 import styles from './GameCard.module.scss'
 import dayjs from "dayjs";
+import {IGameCard} from "../../models/gamecard";
 
-export interface IGame {
-        id?: number
-        name: string
-        background_image: string
-        metacritic: number
-        added: number
-        platforms: {platform: {slug: string}}[]
-        released: string
-        genres: {id: number, name: string}[]
+type Platform = {
+    platform: { slug: string }
 }
 
-const GameCard: FC<IGame> = (
-    {added, platforms, name, metacritic, background_image, id, released, genres }: IGame
-) => {
-    const [filteredPlatforms, setFilteredPlatforms] = useState<string[]>([])
+const clearPlatformGenerations = (platforms: Platform[]) => {
     const temp: string[] = [];
 
-    useEffect(() => {
-        platforms?.forEach(({platform}) => {
-            if(temp?.includes(platform.slug.replace(/\d|-.*/gi, ""))){
-                return
-            } else {
-                temp.push(platform.slug.replace(/\d|-.*/gi, ""))
-            }
-        })
+    platforms?.forEach(({platform}) => {
+        // remove platform generations, eg. Xbox-One-S -> Xbox
+        if(temp?.includes(platform.slug.replace(/\d|-.*/gi, ""))){
+            return
+        } else {
+            temp.push(platform.slug.replace(/\d|-.*/gi, ""))
+        }
+    })
 
-        setFilteredPlatforms(temp)
+    return temp;
+}
+
+const GameCard: FC<IGameCard> = props => {
+    const [filteredPlatforms, setFilteredPlatforms] = useState<string[]>([])
+    const {added, platforms, name, metacritic, background_image, id, released, genres } = props
+
+    useEffect(() => {
+        const filteredPlatforms = clearPlatformGenerations(platforms)
+
+        setFilteredPlatforms(filteredPlatforms)
     }, [])
 
     return (
@@ -45,7 +46,6 @@ const GameCard: FC<IGame> = (
                     <img src={background_image ? background_image  : imgPlaceholder}
                          alt="game image/video"/>
                 </div>
-
                 <div className={styles.cardContent}>
                     <div className={styles.platformsAndScore}>
                         <div className={styles.gamePlatforms}>
@@ -62,11 +62,9 @@ const GameCard: FC<IGame> = (
                             {metacritic}
                         </div>
                     </div>
-
                     <div className={styles.gameTitle}>
                         <Link to={`/games/${id}`}>{name}</Link>
                     </div>
-
                     <div className={styles.cardButtons}>
                         <button className={styles.buttonAdd}>
                             <AiOutlinePlus />
@@ -76,7 +74,6 @@ const GameCard: FC<IGame> = (
                             <HiOutlineGift />
                         </button>
                     </div>
-
                     <div className={`${styles.additionalInfo}`}>
                         <div className={styles.aboutGame}>
                             <div className={styles.aboutGameRow}>
@@ -93,7 +90,6 @@ const GameCard: FC<IGame> = (
                                 ))}</p>
                             </div>
                         </div>
-
                         <div className={styles.infoButtons}>
 
                         </div>

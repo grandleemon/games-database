@@ -1,5 +1,3 @@
-
-
 .pageContentWrapCenterer{
   @apply w-full flex max-w-[1920px] mx-auto my-0;
 
@@ -10,4 +8,138 @@
 
 .mainContent{
   @apply w-full
+}
+
+.header{
+  @apply w-full;
+
+  .headerWrapper{
+    margin: 0 auto;
+    @apply w-full flex justify-between items-center max-w-[1920px] px-10 py-6 gap-x-5;
+
+    .headerItem{
+
+      &.headerSearch{
+        @apply w-full relative;
+
+        .searchResultsWrapper{
+          @apply absolute opacity-0 z-10 w-full top-[100%] bg-black mt-2 rounded-[20px] p-4 pointer-events-none transition-opacity duration-500;
+
+          &.active{
+            @apply opacity-100 pointer-events-auto
+          }
+
+          .resultsSection{
+            .sectionTitle{
+              @apply font-bold text-lg;
+
+              span{
+                @apply font-normal ml-1 text-white/50
+              }
+            }
+
+            .sectionContent{
+              @apply flex flex-col gap-y-2 mt-2;
+
+              a{
+                @apply hover:text-main-grey transition-colors duration-300 flex gap-x-2 items-center font-bold;
+
+                .resultImage{
+                  @apply w-[36px] h-[47px] rounded-[8px] overflow-hidden;
+
+                  img{
+                    @apply w-full h-full object-cover;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .logoLink{
+        @apply font-bold text-lg tracking-[5px];
+      }
+
+      .inputWrapper{
+        @apply w-full relative flex items-center;
+
+        .searchInput{
+          background: rgba(255, 255, 255, 0.16);
+          padding: 0 12px 0 38px;
+          @apply h-11 rounded-[24px] border-0 text-sm w-full duration-300;
+
+          &:focus{
+            @apply outline-none bg-white text-black;
+          }
+        }
+
+        &:hover{
+          .searchInput{
+            @apply bg-white duration-300 text-black;
+          }
+        }
+
+        .searchKeyFocus{
+          @apply absolute right-[15px] text-[11px] flex items-center gap-x-1 text-grey-hsla;
+
+          div{
+            @apply border border-grey-hsla py-[1px] px-[5px] rounded-[3px]
+          }
+        }
+      }
+
+      .profileLink{
+        @apply whitespace-nowrap;
+
+        svg{
+          @apply w-6 h-6 hover:stroke-main-grey transition-colors duration-300;
+        }
+      }
+    }
+  }
+}
+
+.sidebarWrapper{
+  @apply min-w-[220px] py-10 hidden xl:block;
+
+  //aside{
+  //  @apply sticky top-4;
+  //}
+
+  nav{
+    @apply text-2xl;
+
+    .sidebarMenuList{
+      @apply flex flex-col gap-y-5
+    }
+  }
+
+  .sidebarMenuItem{
+    @apply flex flex-col gap-y-3;
+
+    .menuLink{
+      @apply font-bold transition-colors duration-300 hover:text-light-grey-hsla block;
+    }
+
+    .menuTitle{
+      @apply font-bold;
+    }
+
+    .menuList{
+      @apply text-base opacity-90 ml-2 flex flex-col gap-y-2;
+
+      .menuListItem{
+        @apply hover:text-emerald-600 hover:opacity-100 transition-colors duration-300 block;
+
+        a{
+          @apply block;
+        }
+      }
+
+      .menuListShowAll{
+        @apply opacity-40 font-normal cursor-pointer hover:opacity-60 transition-opacity duration-300 block;
+      }
+    }
+  }
 }

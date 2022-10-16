@@ -3,19 +3,18 @@ import {ImWindows8} from "react-icons/im";
 import {IoLogoPlaystation} from "react-icons/io";
 import {FaXbox} from "react-icons/fa";
 
-interface IPlatformItem {
+type IPlatformItem = {
     platform: {
         slug: string
     }
 }
 
-interface IProps {
+type IProps = {
     platforms: IPlatformItem[]
 
 }
 
-const GamePlatforms: FC<IProps> = ({platforms}) => {
-    return (
+const GamePlatforms: FC<IProps> = ({platforms}) => (
         <>
             {platforms?.map((item, idx) => (
                 <span key={idx}>
@@ -27,6 +26,5 @@ const GamePlatforms: FC<IProps> = ({platforms}) => {
             ))}
         </>
     );
-};
 
 export default GamePlatforms;

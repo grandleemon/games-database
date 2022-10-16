@@ -1,5 +1,6 @@
 import React, {Dispatch, FC, SetStateAction} from 'react';
 import Lightbox from "react-image-lightbox";
+import styles from './Game.module.scss'
 
 interface IProps {
     screenshots: {image: string}[]

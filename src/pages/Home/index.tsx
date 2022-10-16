@@ -1,10 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
-import styles from './../components/homepage/Homepage.module.scss'
-import GameCard, {IGame} from "../components/GameCard/GameCard";
-import Loader from "../components/Loader/Loader";
-import {gameApi} from '../api'
+import styles from './index.module.scss'
+import GameCard from "../../components/GameCard/GameCard";
+import Loader from "../../components/Loader/Loader";
+import {gameApi} from '../../api'
 import Masonry from "react-masonry-css";
 import {useInView} from "react-intersection-observer";
+import {IGameCard} from "../../models/gamecard";
 
 const Homepage: FC = () => {
     const { ref, inView, entry } = useInView({
@@ -67,17 +68,15 @@ const Homepage: FC = () => {
                 <h1>New and trending</h1>
                 <p>Based on player counts and release date</p>
             </div>
-
             <div className={styles.cardsWrapper}>
                 <div className={`${styles.loader} ${!isLoading && styles.loaded}`}>
                     {isLoading && <Loader/>}
                 </div>
-
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className={`${styles.cards} ${(!isLoading && !isLoadingMore) && styles.cardsFetched}`}
                     columnClassName={`${styles.cardsColumn}`}>
-                    {games?.map((item: IGame) => (
+                    {games?.map((item: IGameCard) => (
                         <GameCard key={item.id}
                                   added={item.added}
                                   name={item.name}
@@ -89,16 +88,12 @@ const Homepage: FC = () => {
                                   genres={item.genres}
                         />
                     ))}
-
                 </Masonry>
-
                 {!isLoading && <div className={styles.hiddenLoadMore} ref={ref}></div>}
                 {isLoadingMore && <div className={styles.loadingMore}>
                     <Loader />
                 </div>}
             </div>
-
-
         </div>
     );
 };

@@ -2,8 +2,8 @@ import React, {FC, useState} from 'react';
 import {Link, Outlet} from "react-router-dom";
 import styles from "./Layout.module.scss";
 
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 import useScrollToTop from "../../hooks/useScrollToTop";
 
 const Layout: FC = () => {
