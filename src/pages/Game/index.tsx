@@ -1,13 +1,14 @@
 import {FC, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {gameApi} from '../../api'
-import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Loader from "../../components/Loader/Loader";
 import 'react-image-lightbox/style.css';
 import LightboxGallery from "../../components/Game/LightboxGallery";
 import { GameDetails } from "../../components/Game";
 import {IGame, IScreenshot} from "../../models/api/game";
 import styles from "./index.module.scss";
+// ? case error
+import Breadcrumbs from "./../../components/breadcrumbs/Breadcrumbs";
 
 const Game: FC = () => {
     const {id} = useParams()
@@ -20,10 +21,10 @@ const Game: FC = () => {
     const getGameInfo = async () => {
         setIsLoading(true)
         if (id) {
-            const {data}: any = await gameApi.getGameDetails(id)
+            const {data} = await gameApi.getGameDetails(id)
             setCurrentGame(data)
-            const {data: screenshotsData}: any = await gameApi.getGameScreenshots(id)
-            setCurrentGameScreenshots(screenshotsData.results)
+            const {data: screenshotsData} = await gameApi.getGameScreenshots(id)
+            if(screenshotsData) setCurrentGameScreenshots(screenshotsData?.results)
             setIsLoading(false)
         }
     }

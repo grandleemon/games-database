@@ -1,3 +1,8 @@
+type Genre = {
+    id: number
+    name: string
+}
+
 export type IGameCard = {
     id?: number
     name: string
@@ -6,5 +11,5 @@ export type IGameCard = {
     added: number
     platforms: []
     released: string
-    genres: {id: number, name: string}[]
+    genres: Genre[]
 }

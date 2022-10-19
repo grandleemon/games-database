@@ -4,6 +4,7 @@ import {GamePlatforms, DistributionStats, DistributionMeta, GameAbout, GameScree
 import {Link} from "react-router-dom";
 import dayjs from "dayjs";
 import {IGame, IScreenshot} from "../../models/api/game";
+import React from 'react';
 
 type IProps = {
     currentGame: IGame
@@ -74,11 +75,11 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                     <div className={styles.gameMetaBlock}>
                         <div className={styles.metaTitle}>Platforms</div>
                         <div className={styles.metaText}>
-                            {currentGame?.platforms.map((item, idx) => (
-                                <>
-                                    <Link key={idx} to={`/platforms/${item.platform.id}`}>{item.platform.name}</Link>
-                                    {idx !== currentGame?.platforms?.length - 1 ? ", " : ""}
-                                </>
+                            {currentGame?.platforms.map((item, i) => (
+                                <React.Fragment key={i}>
+                                    <Link to={`/platforms/${item.platform.id}`}>{item.platform.name}</Link>
+                                    {i !== currentGame?.platforms?.length - 1 ? ", " : ""}
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
@@ -91,11 +92,11 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                     <div className={styles.gameMetaBlock}>
                         <div className={styles.metaTitle}>Genre</div>
                         <div className={styles.metaText}>
-                            {currentGame?.genres.map((item, idx) => (
-                                <>
-                                    <Link key={idx} to={`/genres/${item.id}`}>{item.name}</Link>
-                                    {idx !== currentGame?.genres?.length - 1 ? ", " : ""}
-                                </>
+                            {currentGame?.genres.map((item, i) => (
+                                <React.Fragment key={i}>
+                                    <Link to={`/genres/${item.id}`}>{item.name}</Link>
+                                    {i !== currentGame?.genres?.length - 1 ? ", " : ""}
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
@@ -108,22 +109,22 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                     <div className={styles.gameMetaBlock}>
                         <div className={styles.metaTitle}>Developer</div>
                         <div className={styles.metaText}>
-                            {currentGame?.developers?.map((item, idx) => (
-                                <>
-                                    <Link key={idx} to={`/developers/${item.id}`}>{item.name}</Link>
-                                    {idx !== currentGame?.developers?.length - 1 ? ", " : ""}
-                                </>
+                            {currentGame?.developers?.map((item, i) => (
+                                <React.Fragment key={i}>
+                                    <Link to={`/developers/${item.id}`}>{item.name}</Link>
+                                    {i !== currentGame?.developers?.length - 1 ? ", " : ""}
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
                     <div className={styles.gameMetaBlock}>
                         <div className={styles.metaTitle}>Publisher</div>
                         <div className={styles.metaText}>
-                            {currentGame?.publishers?.map((item, idx) => (
-                                <>
-                                    <Link key={idx} to={`/publishers/${item.id}`}>{item.name}</Link>
-                                    {idx !== currentGame?.publishers?.length - 1 ? ", " : ""}
-                                </>
+                            {currentGame?.publishers?.map((item, i) => (
+                                <React.Fragment key={i}>
+                                    <Link key={i} to={`/publishers/${item.id}`}>{item.name}</Link>
+                                    {i !== currentGame?.publishers?.length - 1 ? ", " : ""}
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
@@ -137,11 +138,11 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                     <div className={`${styles.gameMetaBlock} ${styles.wideBlock}`}>
                         <div className={styles.metaTitle}>Age rating</div>
                         <div className={styles.metaText}>
-                            {currentGame?.tags?.map((item, idx) => (
-                                <>
-                                    <Link key={idx} to={`/tags/${item.id}`}>{item.name}</Link>
-                                    {idx !== currentGame?.tags?.length - 1 ? ", " : ""}
-                                </>
+                            {currentGame?.tags?.map((item, i) => (
+                                <React.Fragment key={i}>
+                                    <Link key={i} to={`/tags/${item.id}`}>{item.name}</Link>
+                                    {i !== currentGame?.tags?.length - 1 ? ", " : ""}
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
