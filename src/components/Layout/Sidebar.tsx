@@ -1,17 +1,7 @@
 import {FC} from 'react';
 import SidebarMenuItem from "./SidebarMenuItem";
-import styles from "./Sidebar.module.scss"
-
-type ListItem = {
-    link: string
-    title: string
-}
-
-export interface IMenu {
-    link?: string
-    title: string
-    list?: ListItem[]
-}
+import styles from "./Layout.module.scss"
+import {IMenu} from "../../models/layout";
 
 const menu: IMenu[] = [
     {
@@ -194,9 +184,7 @@ const menu: IMenu[] = [
     },
 ]
 
-const Sidebar: FC = () => {
-
-    return (
+const Sidebar: FC = () => (
         <div className={styles.sidebarWrapper}>
             <aside>
                 <nav>
@@ -209,6 +197,5 @@ const Sidebar: FC = () => {
             </aside>
         </div>
     );
-};
 
 export default Sidebar;

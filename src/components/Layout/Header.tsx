@@ -1,14 +1,13 @@
-import React, {FC, MutableRefObject, Ref, useEffect, useRef, useState} from 'react';
-import styles from "./Header.module.scss";
+import {FC, MutableRefObject, useEffect, useRef, useState} from 'react';
+import styles from "./Layout.module.scss";
 import {Link, useLocation} from "react-router-dom";
 import {FiUser} from "react-icons/fi";
-import {useAppSelector} from "../../../store";
-import {gamesSelector} from "../../../store/features/games";
-import {useDebounce} from "../../../hooks/useDebounce";
-import {useQuery} from "@tanstack/react-query";
+import {useAppSelector} from "../../store";
+import {gamesSelector} from "../../store/features/games";
+import {useDebounce} from "../../hooks/useDebounce";
 import axios from "axios";
-import Loader from "../../Loader/Loader";
-import {useClickOutside} from "../../../hooks/useClickOutside";
+import Loader from "../Loader/Loader";
+import {useClickOutside} from "../../hooks/useClickOutside";
 
 interface IResults {
     count: number
@@ -24,7 +23,7 @@ interface IResultsItem {
 const Header: FC = () => {
     const location = useLocation()
     const inputRef = useRef<HTMLInputElement>(null)
-    const { gamesCounter } = useAppSelector(gamesSelector)
+    const {gamesCounter} = useAppSelector(gamesSelector)
     const [gamesCount, setGamesCount] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('')
     const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -42,7 +41,7 @@ const Header: FC = () => {
     }, [location])
 
     useEffect(() => {
-        if(debouncedSearchTerm){
+        if (debouncedSearchTerm) {
             setLoading(true)
             axios
                 .get(`${import.meta.env.VITE_API_URL}games?key=${import.meta.env.VITE_API_KEY}&search=${debouncedSearchTerm}`)
@@ -54,21 +53,22 @@ const Header: FC = () => {
     }, [debouncedSearchTerm])
 
     useEffect(() => {
-        if(gamesCounter) {
+        if (gamesCounter) {
             setGamesCount(gamesCounter.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,'))
         }
     }, [gamesCounter])
 
     useEffect(() => {
-
-        document.addEventListener('keydown', (e) => {
-            if(e.altKey && e.key === 'Enter'){
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.altKey && e.key === 'Enter') {
                 inputRef?.current?.focus()
             }
-        })
+        }
+
+        document.addEventListener('keydown', onKeyDown)
 
         return () => {
-            document.removeEventListener('keydown', () => {})
+            document.removeEventListener('keydown', onKeyDown)
         }
     }, [])
 
@@ -78,23 +78,22 @@ const Header: FC = () => {
                 <div className={styles.headerItem}>
                     <Link to='/' className={styles.logoLink}>LOGO</Link>
                 </div>
-
                 <div className={`${styles.headerItem} ${styles.headerSearch}`}>
                     <div className={styles.inputWrapper} ref={ref}>
                         <input type="text" className={styles.searchInput}
                                value={searchTerm}
                                onFocus={() => setShowSearchDropdown(true)}
-                               // onBlur={() => setShowSearchDropdown(false)}
+                            // onBlur={() => setShowSearchDropdown(false)}
                                placeholder={`Search games`}
                                ref={inputRef}
-                        onChange={e => setSearchTerm(e.target.value)}/>
+                               onChange={e => setSearchTerm(e.target.value)}/>
                         <div className={styles.searchKeyFocus}>
                             <div>alt</div>
                             <span>+</span>
                             <div>enter</div>
                         </div>
-
-                        <div className={`${styles.searchResultsWrapper} ${(showSearchDropdown && searchTerm.length !== 0 && debouncedSearchTerm.length !== 0) ? styles.active : ""}`}>
+                        <div
+                            className={`${styles.searchResultsWrapper} ${(showSearchDropdown && searchTerm.length !== 0 && debouncedSearchTerm.length !== 0) ? styles.active : ""}`}>
                             <div className={styles.resultsSection}>
                                 <div className={styles.sectionTitle}>
                                     Games
@@ -102,29 +101,26 @@ const Header: FC = () => {
                                 </div>
                                 <div className={styles.sectionContent}>
                                     {!loading ? searchResults?.results?.slice(0, 10).map((item: IResultsItem) => (
-                                        <Link to={`/games/${item.id}`}>
-                                            <div className={styles.resultImage}>
-                                                <img src={item.background_image} alt="search game image"/>
-                                            </div>
-                                            {item.name}
-                                        </Link>
-                                    )) : <div className="w-full flex justify-center">
-                                        <Loader />
-                                    </div>}
+                                            <Link to={`/games/${item.id}`}>
+                                                <div className={styles.resultImage}>
+                                                    <img src={item.background_image} alt="search game image"/>
+                                                </div>
+                                                {item.name}
+                                            </Link>
+                                        )) : <div className="w-full flex justify-center">
+                                            <Loader/>
+                                        </div>}
                                     {!loading ? <Link to='/search&query='>See all results</Link> : ""}
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
                 <div className={styles.headerItem}>
                     <Link to='/profile' className={styles.profileLink}>
-                        <FiUser />
+                        <FiUser/>
                     </Link>
                 </div>
-
                 <div className={styles.headerItem}>
                     <Link to='/library' className={styles.profileLink}>My Library</Link>
                 </div>

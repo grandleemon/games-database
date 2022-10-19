@@ -1,2 +1,2 @@
-export { default as gamesSlice, setCount } from "./gamesSlice"
+export { default as gamesSlice } from "./gamesSlice"
 export * from "./selectors"

@@ -12,7 +12,7 @@ const GameAbout: FC<IProps> = ({description, description_raw}) => {
     const condition = description && description?.length >= 612 && !showAbout
 
     return (
-        <>
+        <div>
             {condition
                 ? <>
                     {description_raw.substring(0, 612) + "..." + " "}
@@ -22,7 +22,7 @@ const GameAbout: FC<IProps> = ({description, description_raw}) => {
                 {parse(description)}
                 <span onClick={() => setShowAbout(false)}>Show less</span>
             </>}
-        </>
+        </div>
     );
 };
 

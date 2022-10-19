@@ -1,20 +1,16 @@
-import React, {Dispatch, FC, SetStateAction, useState} from 'react';
+import {Dispatch, FC, SetStateAction, useState} from 'react';
 import styles from "./Game.module.scss";
-import GamePlatforms from "./GamePlatforms";
-import DistributionStats from "./DistributionStats";
-import DistributionMeta from "./DistributionMeta";
-import GameAbout from "./GameAbout";
+import {GamePlatforms, DistributionStats, DistributionMeta, GameAbout, GameScreenshots} from "./";
 import {Link} from "react-router-dom";
 import dayjs from "dayjs";
-import GameScreenshots from "./GameScreenshots";
-import {IGame, IScreenshots} from "../../pages/Game";
+import {IGame, IScreenshot} from "../../models/api/game";
 
-interface IProps {
+type IProps = {
     currentGame: IGame
     openLighbox: Dispatch<SetStateAction<boolean>>
     setImageIndex: Dispatch<SetStateAction<number>>
     imageIndex: number
-    gameScreenshots: IScreenshots[]
+    gameScreenshots: IScreenshot[]
 }
 
 const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, imageIndex, gameScreenshots}) => {
@@ -41,11 +37,11 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
         <div className={styles.gameDetails}>
             <div className={styles.gameInfo}>
                 <div className={styles.gameHead}>
-                    {currentGame.parent_platforms &&
+                    {currentGame.parent_platforms && (
                         <div className={styles.headPlatforms}>
                             <GamePlatforms platforms={currentGame.parent_platforms}/>
                         </div>
-                    }
+                    )}
                     <div>
                         AVERAGE PLAYTIME: {currentGame?.playtime} HOURS
                     </div>
@@ -71,7 +67,7 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                 <div className={styles.gameDescription}>
                     <h2>About</h2>
 
-                    {(currentGame?.description && currentGame.description_raw )&& <GameAbout description={currentGame.description}
+                    {(currentGame?.description && currentGame.description_raw) && <GameAbout description={currentGame.description}
                                description_raw={currentGame.description_raw}/>}
                 </div>
                 <div className={styles.gameMeta}>
@@ -109,7 +105,6 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                             {currentGame?.released ? dayjs(currentGame?.released).format("MMM DD, YYYY") : "TBA"}
                         </div>
                     </div>
-
                     <div className={styles.gameMetaBlock}>
                         <div className={styles.metaTitle}>Developer</div>
                         <div className={styles.metaText}>
@@ -121,7 +116,6 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                             ))}
                         </div>
                     </div>
-
                     <div className={styles.gameMetaBlock}>
                         <div className={styles.metaTitle}>Publisher</div>
                         <div className={styles.metaText}>
@@ -133,7 +127,6 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                             ))}
                         </div>
                     </div>
-
                     <div className={styles.gameMetaBlock}>
                         <div className={styles.metaTitle}>Age rating</div>
                         <div className={styles.metaText}>
@@ -141,7 +134,6 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                             {currentGame?.esrb_rating?.name ? currentGame?.esrb_rating?.name : "Not rated"}
                         </div>
                     </div>
-
                     <div className={`${styles.gameMetaBlock} ${styles.wideBlock}`}>
                         <div className={styles.metaTitle}>Age rating</div>
                         <div className={styles.metaText}>
@@ -153,7 +145,6 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                             ))}
                         </div>
                     </div>
-
                     <div className={`${styles.gameMetaBlock} ${styles.wideBlock}`}>
                         <div className={styles.metaTitle}>Website</div>
                         <div className={styles.metaText}>
@@ -162,19 +153,22 @@ const GameDetails: FC<IProps> = ({currentGame, openLighbox, setImageIndex, image
                     </div>
                 </div>
             </div>
-
             <div className={styles.gameMediaInfo}>
                 <div className={styles.gameVideo}>
-                    <iframe width="100%" height="216" src="https://www.youtube.com/embed/VbIc2_FwReE?autoplay=1&mute=1&controls=0"
-                            title="YouTube video player"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen>
+                    <iframe
+                        width="100%"
+                        height="216"
+                        src="https://www.youtube.com/embed/VbIc2_FwReE?autoplay=1&mute=1&controls=0"
+                        title="YouTube video player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen>
                     </iframe>
                 </div>
                 <div className={styles.gameScreenshots}>
-                    <GameScreenshots screenshots={gameScreenshots}
-                                     openLightbox={openLightbox}
-                                     currentImageIndex={imageIndex}
+                    <GameScreenshots
+                        screenshots={gameScreenshots}
+                        openLightbox={openLightbox}
+                        currentImageIndex={imageIndex}
                     />
                 </div>
             </div>

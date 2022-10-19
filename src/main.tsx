@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import './index.css'
 import Layout from "./components/Layout/Layout";
-import Homepage from "./pages/Homepage";
+import Homepage from "./pages/Home";
 import {Provider} from "react-redux";
 import store from "./store";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
