@@ -49,13 +49,13 @@ const GameCard: FC<IGameCard> = props => {
                 <div className={styles.cardContent}>
                     <div className={styles.platformsAndScore}>
                         <div className={styles.gamePlatforms}>
-                            {filteredPlatforms?.map(item => (
-                                <>
+                            {filteredPlatforms?.map((item, index) => (
+                                <React.Fragment key={index}>
                                     {item.includes("pc") && <ImWindows8 />}
                                     {item.includes('playstation')
                                         && <IoLogoPlaystation />}
                                     {item.includes("xbox") && <FaXbox />}
-                                </>
+                                </React.Fragment>
                             ))}
                         </div>
                         <div className={styles.gameScore}>
@@ -83,10 +83,10 @@ const GameCard: FC<IGameCard> = props => {
                             <div className={styles.aboutGameRow}>
                                 <span>Genres:</span>
                                 <p>{genres.map((genre, index) => (
-                                    <>
+                                    <React.Fragment key={index}>
                                         <Link to={`genres/${genre.id}`}>{genre.name}</Link>
                                         <span>{index + 1 === genres.length ? "" : ", "}</span>
-                                    </>
+                                    </React.Fragment>
                                 ))}</p>
                             </div>
                         </div>
